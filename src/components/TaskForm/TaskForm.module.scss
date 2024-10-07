@@ -1,0 +1,56 @@
+.block {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: auto;
+  padding: 20px 16px 20px 60px;
+  font-size: 1.6em;
+  border: 2px solid transparent;
+  box-shadow: 1px 5px 5px 1px rgba(0, 0, 0, 0.03);
+
+  &:focus {
+    border: 2px solid rgba(175, 47, 47, 0.15);
+  }
+
+  &::placeholder {
+    font-style: italic;
+    color: #e8e6e6;
+  }
+}
+
+.allComplBtn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.checkbox {
+  display: none;
+}
+
+.label {
+  padding: 0 20px;
+  cursor: pointer;
+
+  &::before {
+    content: "❯";
+    display: inline-block;
+    font-size: 22px;
+    color: #949494;
+    transform: rotate(90deg);
+  }
+
+  &.black::before {
+    color: black;
+  }
+}
+
+@media (max-width: 500px) {
+  .input {
+    font-size: 1em;
+  }
+}

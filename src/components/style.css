@@ -1,8 +1,0 @@
-.editItemInput {
-  display: none;
-}
-
-.taskList {
-  display: flex;
-  flex-direction: column-reverse;
-}

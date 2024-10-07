@@ -1,0 +1,108 @@
+.menu {
+  position: relative;
+  display: flex;
+  width: 100%;
+  padding: 10px 20px 15px 16px;
+  gap: 20%;
+  align-items: center;
+  color: #777;
+  background-color: white;
+  border-top: 1px solid #e6e6e6;
+
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6,
+      0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6,
+      0 17px 2px -6px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+  list-style: none;
+}
+
+.name {
+  padding: 4px;
+  color: #777;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    border: 1px solid #c18585;
+    border-radius: 4px;
+  }
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.clearCompl {
+  color: #777;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.counter {
+  display: flex;
+  gap: 5px;
+}
+
+.showBlock {
+  display: block;
+}
+
+.hideBlock {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .menu {
+    gap: 12%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter,
+  .name,
+  .clearCompl,
+  .count {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  .menu {
+    gap: 5%;
+  }
+
+  .counter,
+  .name,
+  .clearCompl,
+  .count {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .counter,
+  .name,
+  .clearCompl,
+  .count {
+    font-size: 9px;
+  }
+}
