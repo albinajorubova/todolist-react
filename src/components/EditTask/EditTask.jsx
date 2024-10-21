@@ -19,13 +19,8 @@ const EditTask = ({ taskId, isActive, text, onClose }) => {
     [dispatch]
   );
 
-  useEffect(() => {
-    if (!isActive) {
-      setInputValue(text);
-      return;
-    }
-
-    const keyDownHandler = (event) => {
+  const keyDownHandler = useCallback(
+    (event) => {
       if (event.key === "Escape") {
         setInputValue(text);
         onClose();
@@ -33,14 +28,25 @@ const EditTask = ({ taskId, isActive, text, onClose }) => {
         handleEditTask(taskId, inputValue);
         onClose();
       }
-    };
+    },
+    [text, inputValue, handleEditTask, onClose, taskId]
+  );
 
-    const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback(
+    (event) => {
       if (editRef.current && !editRef.current.contains(event.target)) {
         setInputValue(text);
         onClose();
       }
-    };
+    },
+    [text, onClose]
+  );
+
+  useEffect(() => {
+    if (!isActive) {
+      setInputValue(text);
+      return;
+    }
 
     document.addEventListener("keydown", keyDownHandler);
     document.addEventListener("click", handleClickOutside);
@@ -49,7 +55,7 @@ const EditTask = ({ taskId, isActive, text, onClose }) => {
       document.removeEventListener("keydown", keyDownHandler);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [taskId, inputValue, onClose, isActive, text, handleEditTask]);
+  }, [text, isActive, keyDownHandler, handleClickOutside]);
 
   return (
     <input

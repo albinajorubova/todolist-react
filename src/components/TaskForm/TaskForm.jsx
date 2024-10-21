@@ -52,7 +52,7 @@ const TaskForm = () => {
         <div className={s.allComplBtn}>
           <input type="checkbox" className={s.checkbox} />
           <label
-            className={cx(s.label, allCompleted ? s.black : "")}
+            className={cx(s.label, { [s.black]: allCompleted })}
             onClick={handleAllCheckbox}
           />
         </div>

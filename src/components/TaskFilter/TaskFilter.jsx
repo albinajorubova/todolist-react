@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useMemo } from "react";
 import cx from "classnames";
 
 import s from "./TaskFilter.module.scss";
@@ -11,7 +11,7 @@ import {
 
 const FILTERS = ["All", "Active", "Completed"];
 
-const ToDoFilter = () => {
+const TaskFilter = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
   const activeFilter = useSelector((state) => state.tasks.filter);
   const anyCompleted = tasks.some((task) => task.completed);
@@ -25,9 +25,9 @@ const ToDoFilter = () => {
     dispatch(setFilter(filter));
   };
 
-  const filteredTasks = tasks.filter((task) => {
-    return !task.completed;
-  });
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => !task.completed);
+  }, [tasks]);
 
   return (
     <>
@@ -35,7 +35,7 @@ const ToDoFilter = () => {
         <div className={s.menu}>
           <div className={s.counter}>
             <span className={s.count}>{filteredTasks.length}</span>
-            item left
+            item{filteredTasks.length > 1 ? "s" : ""} left
           </div>
           <ul className={s.filters}>
             {Object.values(FILTERS).map((filter) => (
@@ -48,19 +48,18 @@ const ToDoFilter = () => {
               </li>
             ))}
           </ul>
-          <button
-            className={cx(
-              s.clearCompl,
-              anyCompleted ? s.showBlock : s.hideBlock
-            )}
-            onClick={() => handleClearComplTasks()}
-          >
-            Clear completed
-          </button>
+          {anyCompleted && (
+            <button
+              className={s.clearCompl}
+              onClick={() => handleClearComplTasks()}
+            >
+              Clear completed
+            </button>
+          )}
         </div>
       )}
     </>
   );
 };
 
-export default React.memo(ToDoFilter);
+export default TaskFilter;
