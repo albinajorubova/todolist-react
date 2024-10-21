@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 
 import s from "./TaskList.module.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { removeTask, selectTask } from "../../redux/store/tasks/tasks.slice";
 
-import EditTask from "../EditTask/EditTask";
+import TaskItem from "../TaskItem/TaskItem";
 
 const TaskList = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
@@ -41,48 +41,43 @@ const TaskList = () => {
     }));
   };
 
-  const filteredTasks = tasks.filter((task) => {
-    if (activeFilter === "All") return true;
-    if (activeFilter === "Active") return !task.completed;
-    if (activeFilter === "Completed") return task.completed;
-    return false;
-  });
+  const filteredTasks = useMemo(
+    () =>
+      tasks.filter((task) => {
+        let shouldInclude;
+
+        switch (activeFilter) {
+          case "All":
+            shouldInclude = true;
+            break;
+          case "Active":
+            shouldInclude = !task.completed;
+            break;
+          case "Completed":
+            shouldInclude = task.completed;
+            break;
+          default:
+            shouldInclude = false;
+            break;
+        }
+
+        return shouldInclude;
+      }),
+    [tasks, activeFilter]
+  );
 
   return (
     <ul className={s.list}>
       {filteredTasks.map((task) => (
-        <li key={task.id} className={s.item}>
-          <div className={s.content}>
-            <input
-              type="checkbox"
-              className={s.check}
-              name="checkInput"
-              id={`item_${task.id}`}
-              onChange={() => handleCheckbox(task.id)}
-              checked={task.completed}
-            />
-            <label
-              className={s.text}
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-                color: task.completed ? "#949494" : "black",
-              }}
-              onDoubleClick={() => handleOpenEdit(task.id)}
-            >
-              {task.text}
-            </label>
-            <EditTask
-              taskId={task.id}
-              isActive={activeTasks[task.id]}
-              text={task.text}
-              onClose={() => handleCloseInput(task.id)}
-            />
-          </div>
-          <button
-            onClick={() => handleRemoveTask(task.id)}
-            className={s.deleteBtn}
-          />
-        </li>
+        <TaskItem
+          key={task.id}
+          task={task}
+          onRemoveTask={handleRemoveTask}
+          onCheckboxChange={handleCheckbox}
+          isEditingActive={activeTasks[task.id]}
+          onOpenEdit={handleOpenEdit}
+          onCloseEdit={handleCloseInput}
+        />
       ))}
     </ul>
   );
