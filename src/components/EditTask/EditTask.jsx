@@ -58,14 +58,17 @@ const EditTask = ({ taskId, isActive, text, onClose }) => {
   }, [text, isActive, keyDownHandler, handleClickOutside]);
 
   return (
-    <input
-      type="text"
-      className={s.input}
-      ref={editRef}
-      value={inputValue}
-      onChange={(e) => setInputValue(e.target.value)}
-      style={{ display: isActive ? "block" : "none" }}
-    />
+    <>
+      {isActive && (
+        <input
+          type="text"
+          className={s.input}
+          ref={editRef}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+      )}
+    </>
   );
 };
 
