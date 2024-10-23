@@ -38,7 +38,7 @@ const TaskFilter = () => {
             item{filteredTasks.length > 1 ? "s" : ""} left
           </div>
           <ul className={s.filters}>
-            {Object.values(FILTERS).map((filter) => (
+            {FILTERS.map((filter) => (
               <li
                 className={cx(s.name, { [s.active]: activeFilter === filter })}
                 key={filter}

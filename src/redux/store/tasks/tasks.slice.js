@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { v4 as uuidv4 } from "uuid";
+
 const initialState = {
   tasks: [],
   filter: "All",
@@ -10,17 +12,27 @@ export const tasksSlice = createSlice({
   initialState,
   reducers: {
     addTask: (state, { payload }) => {
-      state.tasks.push({ id: Date.now(), text: payload, completed: false });
+      state.tasks.push({ id: uuidv4(), text: payload, completed: false });
     },
 
     removeTask: (state, { payload }) => {
       state.tasks = state.tasks.filter((task) => task.id !== payload);
     },
 
+    editTask: (state, { payload }) => {
+      const task = state.tasks.find((task) => task.id === payload.id);
+
+      if (task) {
+        task.text = payload.text;
+      }
+    },
+
     selectTask: (state, { payload }) => {
-      state.tasks = state.tasks.map((task) =>
-        task.id === payload ? { ...task, completed: !task.completed } : task
-      );
+      const task = state.tasks.find((task) => task.id === payload);
+
+      if (task) {
+        task.completed = !task.completed;
+      }
     },
 
     selectAllTasks: (state) => {
@@ -35,12 +47,6 @@ export const tasksSlice = createSlice({
 
     clearComplTasks: (state) => {
       state.tasks = state.tasks.filter((task) => !task.completed);
-    },
-
-    editTask: (state, { payload }) => {
-      state.tasks = state.tasks.map((task) =>
-        task.id === payload.id ? { ...task, text: payload.text } : task
-      );
     },
 
     setFilter: (state, action) => {

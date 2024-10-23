@@ -10,7 +10,7 @@ import TaskItem from "../TaskItem/TaskItem";
 const TaskList = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
   const activeFilter = useSelector((state) => state.tasks.filter);
-  const [activeTasks, setActiveTasks] = useState({});
+  const [activeTaskId, setActiveTaskId] = useState(null);
   const dispatch = useDispatch();
 
   const handleRemoveTask = useCallback(
@@ -27,19 +27,13 @@ const TaskList = () => {
     [dispatch]
   );
 
-  const handleOpenEdit = (taskId) => {
-    setActiveTasks((prev) => ({
-      ...prev,
-      [taskId]: true,
-    }));
-  };
+  const handleOpenEdit = useCallback((taskId) => {
+    setActiveTaskId(taskId);
+  }, []);
 
-  const handleCloseInput = (taskId) => {
-    setActiveTasks((prev) => ({
-      ...prev,
-      [taskId]: false,
-    }));
-  };
+  const handleCloseInput = useCallback(() => {
+    setActiveTaskId(null);
+  }, []);
 
   const filteredTasks = useMemo(
     () =>
@@ -74,7 +68,7 @@ const TaskList = () => {
           task={task}
           onRemoveTask={handleRemoveTask}
           onCheckboxChange={handleCheckbox}
-          isEditingActive={activeTasks[task.id]}
+          isEditingActive={activeTaskId === task.id}
           onOpenEdit={handleOpenEdit}
           onCloseEdit={handleCloseInput}
         />
